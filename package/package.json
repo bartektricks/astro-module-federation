@@ -1,6 +1,6 @@
 {
 	"name": "astro-module-federation",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Astro Integration of @originjs/module-federation package.",
 	"author": {
 		"email": "bartektricks@gmail.com",
