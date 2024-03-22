@@ -1,4 +1,3 @@
-
 export default function ViteRemoteComponent() {
-  return <Component />
+	return <Component />;
 }

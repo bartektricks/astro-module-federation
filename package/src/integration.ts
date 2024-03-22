@@ -1,7 +1,7 @@
-import type { AstroIntegration } from "astro";
 import federation, {
 	type VitePluginFederationOptions,
 } from "@originjs/vite-plugin-federation";
+import type { AstroIntegration } from "astro";
 
 export const integration = (
 	options: VitePluginFederationOptions,
