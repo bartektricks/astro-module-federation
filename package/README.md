@@ -4,21 +4,9 @@ This is an [Astro integration](https://docs.astro.build/en/guides/integrations-g
 
 ## Usage
 
-### Prerequisites
+### Pre-requisites
 
-Install the latest version of @originjs/vite-plugin-federation:
-
-```bash
-pnpm add @originjs/vite-plugin-federation -D
-```
-
-```bash
-npm install @originjs/vite-plugin-federation -D
-```
-
-```bash
-yarn add @originjs/vite-plugin-federation -D
-```
+You need to add a server integration to your Astro app and set the output to `server`.
 
 ### Installation
 
@@ -42,14 +30,17 @@ Or install it **manually**:
 
 ```bash
 pnpm add astro-module-federation
+pnpm add @originjs/vite-plugin-federation -D
 ```
 
 ```bash
 npm install astro-module-federation
+npm install @originjs/vite-plugin-federation -D
 ```
 
 ```bash
 yarn add astro-module-federation
+yarn add @originjs/vite-plugin-federation -D
 ```
 
 2. Add the integration to your astro config
@@ -67,6 +58,24 @@ export default defineConfig({
 ### Configuration
 
 For the full list of properties refer to the [vite-plugin-federation](https://github.com/originjs/vite-plugin-federation#usage) usage section.
+
+### Example for Astro host app
+
+Example config with the Node and React adapters
+```js
+export default defineConfig({
+  output: "server",
+  integrations: [react(), moduleFederation({
+    remotes: {
+      viteApp: "http://localhost:4173/assets/remoteEntry.js"
+    },
+    shared: ['react', 'react-dom']
+  })],
+  adapter: node({
+    mode: "standalone"
+  })
+});
+```
 
 ## Contributing
 
