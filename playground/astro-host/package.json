@@ -16,7 +16,7 @@
 		"@astrojs/tailwind": "^5.1.0",
 		"@types/react": "^18.2.67",
 		"@types/react-dom": "^18.2.23",
-		"astro": "^4.5.8",
+		"astro": "^4.5.12",
 		"astro-module-federation": "workspace:*",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
