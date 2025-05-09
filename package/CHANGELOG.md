@@ -1,5 +1,11 @@
 # astro-module-federation
 
+## 0.1.0
+
+### Minor Changes
+
+- 89701ec: Update dependencies and examples for module federation
+
 ## 0.0.4
 
 ### Patch Changes
