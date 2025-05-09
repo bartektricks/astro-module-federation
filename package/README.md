@@ -59,21 +59,101 @@ export default defineConfig({
 
 For the full list of properties refer to the [vite-plugin-federation](https://github.com/originjs/vite-plugin-federation#usage) usage section.
 
-### Example for Astro host app
+### Usage example
 
-Example config with the Node and React adapters
+#### Simple usage
+Example config with the Node and React adapters for apps that share the same base url
+
+Astro config:
 ```js
 export default defineConfig({
   output: "server",
   integrations: [react(), moduleFederation({
     remotes: {
-      viteApp: "http://localhost:4173/assets/remoteEntry.js"
+      viteApp: "http://localhost:4173/vite-app/assets/remoteEntry.js"
     },
     shared: ['react', 'react-dom']
   })],
   adapter: node({
     mode: "standalone"
-  })
+  }),
+});
+```
+
+Vite app config:
+```js
+export default defineConfig({
+	build: {
+		target: "esnext",
+	},
+	plugins: [
+		react(),
+		federation({
+			name: "viteRemote",
+			filename: "remoteEntry.js",
+			exposes: {
+				"./App": "./src/App",
+			},
+			shared: ["react", "react-dom"],
+		}),
+	],
+});
+```
+
+#### Different base url scenario
+
+The host app needs a proxy to serve CSS and static files. It also needs a way to easily distinguish the remote and host asset paths.
+That's why it's best to add a baseUrl prefix for the remote app. In this case it's simply `vite-app`. The remote app (Vite) needs to also opt out from `cssCodeSplitting` to load the css in the remote app.
+
+This example is based on the playground code - check [Astro config](../playground/astro-host/astro.config.mjs) and [Remove vite config](../playground/vite-remote/vite.config.ts) for a locally working example.
+
+Astro config:
+```diff
+export default defineConfig({
+  output: "server",
+  integrations: [react(), moduleFederation({
+    remotes: {
++      viteRemote: "http://localhost:4173/vite-remote/assets/remoteEntry.js"
+    },
+    shared: ['react', 'react-dom']
+  })],
+  adapter: node({
+    mode: "standalone"
+  }),
+  vite: {
+    server: {
+      proxy: {
++       "/vite-remote": {
+          target: "http://localhost:4173",
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        }
+      }
+    }
+  }
+});
+```
+
+Vite config:
+```diff
+export default defineConfig({
++	base: "/vite-remote/",
+	build: {
+		target: "esnext",
++		cssCodeSplit: false,
+	},
+	plugins: [
+		react(),
+		federation({
+			name: "viteRemote",
+			filename: "remoteEntry.js",
+			exposes: {
+				"./App": "./src/App"
+			},
+			shared: ["react", "react-dom"],
+		}),
+	],
 });
 ```
 
@@ -103,7 +183,7 @@ You can now edit files in `package`. Please note that making changes to those fi
 
 ## TODO
 
-- [ ] Figure out how to handle missing assets and styles.
+- [x] Figure out how to handle missing assets and styles.
 - [ ] Figure out how to use Astro as a remote.
 
 ## Licensing

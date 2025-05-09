@@ -4,8 +4,10 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	base: "/vite-remote/",
 	build: {
 		target: "esnext",
+		cssCodeSplit: false,
 	},
 	plugins: [
 		react(),
